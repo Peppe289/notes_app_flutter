@@ -1,10 +1,7 @@
 import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:path/path.dart';
-import 'package:sqflite/sqflite.dart';
 import 'package:sqlite_test/Model/Note.dart';
-import 'package:sqlite_test/main.dart';
 import 'package:sqlite_test/utils/SQLite_Inteface.dart';
 
 class SecondRoute extends StatelessWidget {
