@@ -63,6 +63,12 @@ class _HomePageState extends State<HomePage> {
       items.clear();
       items = notes;
     });
+
+    // in case we remove all notes, exit from edit mode.
+    // in same case, don't allow edit mode.
+    if (items.isEmpty) {
+      edit = false;
+    }
   }
 
   String formatNumber(int number) {
