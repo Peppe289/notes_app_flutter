@@ -2,13 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import 'package:sqlite_test/Model/Note.dart';
 import 'package:sqlite_test/utils/SQLite_Inteface.dart';
+import 'dart:io' show Platform;
 
 import 'newNotes.dart';
 
 void main() {
   // this fix is needed for windows platform.
-  sqfliteFfiInit();
-  databaseFactory = databaseFactoryFfi;
+  if (Platform.isWindows) {
+    sqfliteFfiInit();
+    databaseFactory = databaseFactoryFfi;
+  }
 
   runApp(const SQLiteNotes());
 }
