@@ -1,8 +1,9 @@
+// ignore_for_file: file_names
+
 import 'dart:async';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:sqlite_test/Model/Note.dart';
-import 'package:sqlite_test/utils/SQLite_Inteface.dart';
+import 'package:sqlite_test/utils/SQLite_Interface.dart';
 
 class SecondRoute extends StatelessWidget {
   const SecondRoute({super.key});
@@ -32,6 +33,7 @@ class SecondRoute extends StatelessWidget {
     // delay and then fix issues witch don't show new notes.
     void saveAndGoBack(BuildContext context, Note note) async {
       await saveNote(note);
+      // ignore: use_build_context_synchronously
       Navigator.pop(context);
     }
 
@@ -43,6 +45,7 @@ class SecondRoute extends StatelessWidget {
     /* check if id is passed in this page. if not, this can be get error. then catch the error end ignore. */
     try {
       id = ModalRoute.of(context)!.settings.arguments as int;
+    // ignore: empty_catches
     } catch(ignore) {}
 
     Future<void> loadContent() async {

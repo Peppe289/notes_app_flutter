@@ -3,7 +3,7 @@ import 'dart:collection';
 import 'package:flutter/material.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import 'package:sqlite_test/Model/Note.dart';
-import 'package:sqlite_test/utils/SQLite_Inteface.dart';
+import 'package:sqlite_test/utils/SQLite_Interface.dart';
 import 'dart:io' show Platform;
 
 import 'newNotes.dart';
@@ -46,7 +46,6 @@ class _HomePageState extends State<HomePage> {
   SqliteNotes dbNote = SqliteNotes();
   List<Note> items = [];
   HashMap<int, bool> checked = HashMap();
-  double _opacityfloatingActionBtn = 1.0;
   bool edit = false;
 
   Future<void> initDatabase() async {
@@ -83,7 +82,6 @@ class _HomePageState extends State<HomePage> {
             child: const Icon(Icons.edit),
             onPressed: () {
               edit = !edit;
-              _opacityfloatingActionBtn = edit ? 0 : 1.0;
               updateList();
             },
           ),
@@ -163,7 +161,7 @@ class _HomePageState extends State<HomePage> {
               updateList();
             } else {
               // use async method for reload list after exit in add notes page.
-              final value = await Navigator.push(
+              await Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => const SecondRoute()),
               );
