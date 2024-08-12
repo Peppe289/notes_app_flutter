@@ -12,6 +12,7 @@ class SecondRoute extends StatelessWidget {
     /* controller for input filed. this needed for retrieve text */
     TextEditingController titleController = TextEditingController();
     TextEditingController contentController = TextEditingController();
+    int? id;
 
     /* on click call this async function. see save button. */
     Future<void> saveNote(Note note) async {
@@ -33,6 +34,23 @@ class SecondRoute extends StatelessWidget {
       Navigator.pop(context);
     }
 
+    /* check if id is passed in this page. if not, this can be get error. then catch the error end ignore. */
+    try {
+      id = ModalRoute.of(context)!.settings.arguments as int;
+    } catch(ignore) {}
+
+    Future<void> loadContent() async {
+      if (id != null) {
+        SqliteNotes sql = SqliteNotes();
+        List<Note> notes = await sql.doRetrieveNotes();
+        Iterable<Note> filter = notes.where((e) => e.id == id);
+        titleController.text = filter.first.title;
+        contentController.text = filter.first.content;
+      }
+    }
+
+    loadContent();
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Second Route'),
@@ -44,8 +62,8 @@ class SecondRoute extends StatelessWidget {
             children: [
               TextField(
                 controller: titleController,
-                decoration: const InputDecoration(
-                  hintText: 'Title',
+                decoration: InputDecoration(
+                  hintText: id == null ? 'Title' : '',
                 ),
               ),
               Expanded(
@@ -54,8 +72,8 @@ class SecondRoute extends StatelessWidget {
                   child: TextField(
                     controller: contentController,
                     textAlignVertical: TextAlignVertical.top,
-                    decoration: const InputDecoration(
-                      hintText: 'Write some stuff...',
+                    decoration: InputDecoration(
+                      hintText: id == null ? 'Write some stuff...' : '',
                     ),
                     maxLines: null,
                     expands: true,

@@ -86,25 +86,41 @@ class _HomePageState extends State<HomePage> {
                     title: Row(
                       children: [
                         Expanded(
-                          child: Column(
-                            children: [
-                              Row(
+                          child: ElevatedButton(
+                            child: SizedBox(
+                              height: 70,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
-                                  Expanded(
-                                      child: Text(items[index].title,
-                                          maxLines: 1,
-                                          overflow: TextOverflow.ellipsis)),
-                                  // sorry for this.
-                                  Text("${formatNumber(items[index].date!.hour)}:${formatNumber(items[index].date!.minute)} ${formatNumber(items[index].date!.day)}/${formatNumber(items[index].date!.month)}/${formatNumber(items[index].date!.year)}")
+                                  Row(
+                                    children: [
+                                      Expanded(
+                                          child: Text(items[index].title,
+                                              maxLines: 1,
+                                              overflow: TextOverflow.ellipsis)),
+                                      // sorry for this.
+                                      Text(
+                                          "${formatNumber(items[index].date!.hour)}:${formatNumber(items[index].date!.minute)} ${formatNumber(items[index].date!.day)}/${formatNumber(items[index].date!.month)}/${formatNumber(items[index].date!.year)}")
+                                    ],
+                                  ),
+                                  Container(
+                                    alignment: Alignment.centerLeft,
+                                    child: Text(items[index].content,
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis),
+                                  ),
                                 ],
                               ),
-                              Container(
-                                alignment: Alignment.centerLeft,
-                                child: Text(items[index].content,
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis),
-                              ),
-                            ],
+                            ),
+                            onPressed: () => {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const SecondRoute(), settings: RouteSettings(arguments: items[index].id)
+                                ),
+                              )
+                            },
                           ),
                         )
                       ],
