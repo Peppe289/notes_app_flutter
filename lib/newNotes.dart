@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:sqlite_test/Model/Note.dart';
 import 'package:sqlite_test/utils/SQLite_Interface.dart';
 
-class SecondRoute extends StatelessWidget {
-  const SecondRoute({super.key});
+class WriteNotes extends StatelessWidget {
+  const WriteNotes({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -62,7 +62,7 @@ class SecondRoute extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Second Route'),
+        title: Text(id == null ? 'New Notes' : 'Edit Notes'),
         actions: <Widget>[
           IconButton(
             icon: const Icon(Icons.save),

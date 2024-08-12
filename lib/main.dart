@@ -135,7 +135,7 @@ class _HomePageState extends State<HomePage> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => const SecondRoute(), settings: RouteSettings(arguments: items[index].id)
+                                    builder: (context) => const WriteNotes(), settings: RouteSettings(arguments: items[index].id)
                                 ),
                               )
                             },
@@ -163,7 +163,7 @@ class _HomePageState extends State<HomePage> {
               // use async method for reload list after exit in add notes page.
               await Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const SecondRoute()),
+                MaterialPageRoute(builder: (context) => const WriteNotes()),
               );
               // reload here the page with notes list.
               updateList();
