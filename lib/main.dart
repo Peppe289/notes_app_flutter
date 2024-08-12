@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import 'package:sqlite_test/Model/Note.dart';
 import 'package:sqlite_test/utils/SQLite_Inteface.dart';
 
 import 'newNotes.dart';
 
 void main() {
+  // this fix is needed for windows platform.
+  sqfliteFfiInit();
+  databaseFactory = databaseFactoryFfi;
+
   runApp(const SQLiteNotes());
 }
 
@@ -38,6 +43,8 @@ class _HomePageState extends State<HomePage> {
 
   Future<void> initDatabase() async {
     dbNote.init();
+    // update list at init. this grant we have list of notes when lunch the application.
+    updateList();
   }
 
   Future<void> updateList() async {

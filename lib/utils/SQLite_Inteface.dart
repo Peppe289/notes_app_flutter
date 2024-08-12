@@ -6,11 +6,16 @@ import 'package:sqflite/sqflite.dart';
 import '../Model/Note.dart';
 
 class SqliteNotes {
-  late final database;
+  static Database? database;
   static const String dbName = "notes";
 
   Future<void> init() async {
-    database = openDatabase(join(await getDatabasesPath(), "$dbName.db"),
+    // already initialized. don't do it again.
+    if (database != null) {
+      return;
+    }
+
+    database = await openDatabase(join(await getDatabasesPath(), "$dbName.db"),
         onCreate: (db, version) {
       // id: auto increment - title - content - date: as string in database.
       return db.execute(
@@ -19,9 +24,19 @@ class SqliteNotes {
     }, version: 1);
   }
 
+  // call this function instead "database" variable.
+  // with this function we are sure to have database entry or error.
+  // avoid empty usage.
+  Future<Database> databaseWrapper() async {
+    if (database == null) {
+      await init();
+    }
+    return database!;
+  }
+
   // insert note into database. this operation take only text and title. ID is auto increment and date is automatic set to now.
   Future<int> insert(Note note) async {
-    Database db = await database;
+    Database db = await databaseWrapper();
 
     if (note.title.isEmpty || note.content.isEmpty) {
       return -1;
@@ -36,7 +51,7 @@ class SqliteNotes {
   }
 
   Future<List<Note>> doRetrieveNotes() async {
-    final db = await database;
+    Database db = await databaseWrapper();
 
     // retrieve all items.
     final List<Map<String, Object?>> notes = await db.query(dbName);
