@@ -34,6 +34,14 @@ class SecondRoute extends StatelessWidget {
       Navigator.pop(context);
     }
 
+    // save into database new data.
+    void saveData() {
+      // create note object with text label field text.
+      Note note = Note(null, titleController.text, contentController.text, null);
+      // see function docs.
+      saveAndGoBack(context, note);
+    }
+
     /* check if id is passed in this page. if not, this can be get error. then catch the error end ignore. */
     try {
       id = ModalRoute.of(context)!.settings.arguments as int;
@@ -54,6 +62,12 @@ class SecondRoute extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Second Route'),
+        actions: <Widget>[
+          IconButton(
+            icon: const Icon(Icons.save),
+            onPressed: () => saveData(),
+          ),
+        ],
       ),
       body: SafeArea(
         child: Padding(
@@ -94,12 +108,7 @@ class SecondRoute extends StatelessWidget {
                           child: const Text('Annulla'),
                         ),
                         ElevatedButton(
-                          onPressed: () {
-                            // create note object with text label field text.
-                            Note note = Note(null, titleController.text, contentController.text, null);
-                            // see function docs.
-                            saveAndGoBack(context, note);
-                          },
+                          onPressed: () => saveData(),
                           child: const Text('Salva'),
                         ),
                       ],
