@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:flutter/material.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import 'package:sqlite_test/Model/Note.dart';
@@ -43,6 +45,9 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   SqliteNotes dbNote = SqliteNotes();
   List<Note> items = [];
+  HashMap<int, bool> checked = HashMap();
+  double _opacityfloatingActionBtn = 1.0;
+  bool edit = false;
 
   Future<void> initDatabase() async {
     dbNote.init();
@@ -73,6 +78,16 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.title),
+        actions: <Widget>[
+          TextButton(
+            child: const Icon(Icons.edit),
+            onPressed: () {
+              edit = !edit;
+              _opacityfloatingActionBtn = edit ? 0 : 1.0;
+              updateList();
+            },
+          ),
+        ],
       ),
       body: SafeArea(
         child: Column(
@@ -83,6 +98,11 @@ class _HomePageState extends State<HomePage> {
                 itemCount: items.length,
                 itemBuilder: (context, index) {
                   return ListTile(
+                    trailing: edit ? Checkbox(
+                      value: checked[items[index].id!] ?? false, onChanged: (bool? value) { setState(() {
+                        checked[items[index].id!] = value!;
+                      }); },
+                    ) : null,
                     title: Row(
                       children: [
                         Expanded(
@@ -133,18 +153,27 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          // use async method for reload list after exit in add notes page.
-          final value = await Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const SecondRoute()),
-          );
-          // reload here the page with notes list.
-          updateList();
-        },
-        tooltip: 'Add new notes',
-        child: const Icon(Icons.add),
-      ),
+          onPressed: () async {
+            if (edit) {
+              // in edit mode, this button is used for remove selected notes.
+              checked.removeWhere((key, value) => value = false );
+              for (int id in checked.keys) {
+                await dbNote.deleteNote(id);
+              }
+              updateList();
+            } else {
+              // use async method for reload list after exit in add notes page.
+              final value = await Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const SecondRoute()),
+              );
+              // reload here the page with notes list.
+              updateList();
+            }
+          },
+          tooltip: edit ? 'Remove notes' : 'Add new notes',
+          child: edit ? const Icon(Icons.delete_forever) : const Icon(Icons.add),
+        ),
     );
   }
 }

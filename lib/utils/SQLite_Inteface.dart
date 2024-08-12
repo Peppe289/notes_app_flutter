@@ -84,4 +84,17 @@ class SqliteNotes {
       whereArgs: [note.id],
     );
   }
+
+  Future<void> deleteNote(int id) async {
+    Database db = await databaseWrapper();
+
+    // Remove the Dog from the database.
+    await db.delete(
+      'notes',
+      // Use a `where` clause to delete a specific dog.
+      where: 'id = ?',
+      // Pass the Dog's id as a whereArg to prevent SQL injection.
+      whereArgs: [id],
+    );
+  }
 }
