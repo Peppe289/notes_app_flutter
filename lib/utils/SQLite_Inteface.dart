@@ -67,4 +67,21 @@ class SqliteNotes {
         Note(id, title, content, DateTime.parse(date)),
     ];
   }
+
+  Future<void> updateNote(Note note) async {
+    Database db = await databaseWrapper();
+
+    HashMap<String, String> map = HashMap();
+    map["title"] = note.title;
+    map["content"] = note.content;
+    map["date"] = DateTime.now().toString();
+
+    // Update the given Dog.
+    await db.update(
+      'notes',
+      map,
+      where: 'id = ?',
+      whereArgs: [note.id],
+    );
+  }
 }

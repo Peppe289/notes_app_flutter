@@ -20,9 +20,10 @@ class SecondRoute extends StatelessWidget {
       // wait for initialize database in this instance.
       await dbNote.init();
       // retrieve result of saved in database action.
-      int result = await dbNote.insert(note);
-      if (kDebugMode) {
-        print("Saved into database with result: $result");
+      if (id == null) {
+        await dbNote.insert(note);
+      } else {
+        await dbNote.updateNote(note);
       }
     }
 
@@ -36,10 +37,7 @@ class SecondRoute extends StatelessWidget {
 
     // save into database new data.
     void saveData() {
-      // create note object with text label field text.
-      Note note = Note(null, titleController.text, contentController.text, null);
-      // see function docs.
-      saveAndGoBack(context, note);
+      saveAndGoBack(context, Note(id, titleController.text, contentController.text, null));
     }
 
     /* check if id is passed in this page. if not, this can be get error. then catch the error end ignore. */
