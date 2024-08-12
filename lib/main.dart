@@ -66,13 +66,12 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     initDatabase();
 
-    return SafeArea(
-        child: Scaffold(
+    return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.title),
       ),
-      body: Center(
+      body: SafeArea(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
@@ -127,6 +126,6 @@ class _HomePageState extends State<HomePage> {
         tooltip: 'Add new notes',
         child: const Icon(Icons.add),
       ),
-    ));
+    );
   }
 }
